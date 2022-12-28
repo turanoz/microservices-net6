@@ -10,6 +10,7 @@ namespace Catalog.Api.Services
     public class CategoryService:ICategoryService
     {
         private readonly IMongoCollection<Category> _categoryCollection;
+        private readonly IMongoCollection<Product> _productCollection;
         private readonly IMapper _mapper;
 
         public CategoryService(IMapper mapper, IDatabaseSettings databaseSettings)
@@ -18,13 +19,14 @@ namespace Catalog.Api.Services
             var database = client.GetDatabase(databaseSettings.DatabaseName);
 
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
+            _productCollection = database.GetCollection<Product>(databaseSettings.ProductCollectionName);
 
             _mapper = mapper;
         }
 
         public async Task<Response<List<CategoryDto>>> GetAllAsync()
         {
-            var categories = await _categoryCollection.Find(category => true).ToListAsync();
+            var categories = await _categoryCollection.Find(x=>true).ToListAsync();
 
             return Response<List<CategoryDto>>.Success(_mapper.Map<List<CategoryDto>>(categories), 200);
         }

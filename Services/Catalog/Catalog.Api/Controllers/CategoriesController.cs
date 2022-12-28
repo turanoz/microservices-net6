@@ -1,12 +1,14 @@
 ﻿using Catalog.Api.Dtos;
 using Catalog.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ControllerBases;
 
 namespace Catalog.Api.Controllers
 {
+   
+    [Authorize]
     [Route("api/[controller]")]
-    [ApiController]
     public class CategoriesController : CustomBaseController
     {
         private readonly ICategoryService _categoryService;
@@ -33,6 +35,7 @@ namespace Catalog.Api.Controllers
             return CreateActionResultInstance(category);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CategoryDto categoryDto)
         {

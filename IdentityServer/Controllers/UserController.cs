@@ -18,7 +18,7 @@ namespace IdentityServer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
         }
@@ -26,14 +26,18 @@ namespace IdentityServer.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(SignupDto signupDto)
         {
+            
             var user = new ApplicationUser
             {
-                UserName = signupDto.UserName,
+                UserName = signupDto.Email,
+                Name = signupDto.Name,
+                Surname = signupDto.Surname,
                 Email = signupDto.Email,
-                City = signupDto.City
+                EmailConfirmed = true,
             };
 
             var result = await _userManager.CreateAsync(user, signupDto.Password);
+            await _userManager.AddToRoleAsync(user, "User");
 
             if (!result.Succeeded)
             {
@@ -52,9 +56,14 @@ namespace IdentityServer.Controllers
 
             var user = await _userManager.FindByIdAsync(userIdClaim.Value);
 
+            var role = await _userManager.GetRolesAsync(user);
+
             if (user == null) return BadRequest();
 
-            return Ok(new { Id = user.Id, UserName = user.UserName, Email = user.Email, City = user.City });
+            return Ok(new
+            {
+                Id = user.Id, UserName = user.UserName, Email = user.Email, Name = user.Name, Surname = user.Surname,Roles=role
+            });
         }
     }
 }

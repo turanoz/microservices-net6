@@ -9,6 +9,8 @@ namespace Catalog.Api.Services
 
         Task<Response<ProductDto>> GetByIdAsync(string id);
 
+        Task<Response<List<ProductDto>>> GetAllByCategoryIdAsync(string id);
+
         Task<Response<ProductDto>> CreateAsync(ProductCreateDto productCreateDto);
 
         Task<Response<NoContent>> UpdateAsync(ProductUpdateDto productUpdateDto);

@@ -13,7 +13,9 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityServer
@@ -36,7 +38,10 @@ namespace IdentityServer
                 //    rollOnFileSizeLimit: true,
                 //    shared: true,
                 //    flushToDiskInterval: TimeSpan.FromSeconds(1))
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                    theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
 
             try
@@ -52,10 +57,21 @@ namespace IdentityServer
                     applicationDbContext.Database.Migrate();
 
                     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+
+                    if (!roleManager.Roles.Any())
+                    {
+                        roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
+                        roleManager.CreateAsync(new IdentityRole("User")).Wait();
+                    }
 
                     if (!userManager.Users.Any())
                     {
-                        userManager.CreateAsync(new ApplicationUser { UserName = "turanoz", Email = "turanoz@outlook.com.tr", City = "İstanbul" }, "Whatisthis1!").Wait();
+                        var user = new ApplicationUser
+                            { UserName = "turanoz", Email = "turanoz@outlook.com.tr", Name = "Turan", Surname = "Öz" };
+                        userManager.CreateAsync(user, "Whatisthis1!!").Wait();
+                        userManager.AddToRolesAsync(user, new List<string>(){"admin"}).Wait();
                     }
                 }
 
@@ -77,9 +93,6 @@ namespace IdentityServer
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

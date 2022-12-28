@@ -1,10 +1,12 @@
 ﻿using Catalog.Api.Dtos;
 using Catalog.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ControllerBases;
 
 namespace Catalog.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : CustomBaseController
@@ -25,6 +27,15 @@ namespace Catalog.Api.Controllers
         }
 
         //products/5
+        [HttpGet("category/{id}")]
+        public async Task<IActionResult> GetByCategoryId(string id)
+        {
+            var response = await _productService.GetAllByCategoryIdAsync(id);
+
+            return CreateActionResultInstance(response);
+        }
+
+        //products/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -33,7 +44,7 @@ namespace Catalog.Api.Controllers
             return CreateActionResultInstance(response);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateDto productCreateDto)
         {
@@ -42,6 +53,7 @@ namespace Catalog.Api.Controllers
             return CreateActionResultInstance(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
         {
@@ -50,6 +62,7 @@ namespace Catalog.Api.Controllers
             return CreateActionResultInstance(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
