@@ -16,28 +16,30 @@ namespace Order.Domain
 
         public Order()
         {
+        
         }
 
-        public Order(string buyerId, Address address)
+        public Order(string buyerId, Address address, decimal totalPrice)
         {
             _orderItems = new List<OrderItem>();
             CreatedDate = DateTime.Now;
             BuyerId = buyerId;
             Address = address;
+            TotalPrice = totalPrice;
         }
 
-        public void AddOrderItem(string productId, string productName, decimal price, string pictureUrl)
+        public void AddOrderItem(string productId, string productName, int quantity, decimal price, string pictureUrl)
         {
             var existProduct = _orderItems.Any(x => x.ProductId == productId);
 
             if (!existProduct)
             {
-                var newOrderItem = new OrderItem(productId, productName, pictureUrl, price);
+                var newOrderItem = new OrderItem(productId, productName, pictureUrl, quantity, price);
 
                 _orderItems.Add(newOrderItem);
             }
         }
 
-        public decimal GetTotalPrice => _orderItems.Sum(x => x.Price);
+        public decimal TotalPrice { get; private set; }
     }
 }

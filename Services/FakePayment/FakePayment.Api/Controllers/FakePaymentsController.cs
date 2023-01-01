@@ -24,20 +24,24 @@ namespace FakePayment.Api.Controllers
             //paymentDto ile ödeme işlemi gerçekleştir.
             var sendEndpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:create-order-service"));
 
-            var createOrderMessageCommand = new CreateOrderMessageCommand();
-
-            createOrderMessageCommand.BuyerId = paymentDto.Order.BuyerId;
-            createOrderMessageCommand.Province = paymentDto.Order.Address.Province;
-            createOrderMessageCommand.District = paymentDto.Order.Address.District;
-            createOrderMessageCommand.Street = paymentDto.Order.Address.Street;
-            createOrderMessageCommand.Line = paymentDto.Order.Address.Line;
-            createOrderMessageCommand.ZipCode = paymentDto.Order.Address.ZipCode;
+            var createOrderMessageCommand = new CreateOrderMessageCommand
+            {
+                BuyerId = paymentDto.Order.BuyerId,
+                Province = paymentDto.Order.Address.Province,
+                District = paymentDto.Order.Address.District,
+                Street = paymentDto.Order.Address.Street,
+                Line = paymentDto.Order.Address.Line,
+                ZipCode = paymentDto.Order.Address.ZipCode,
+                TotalPrice = paymentDto.TotalPrice
+            };
+            
 
             paymentDto.Order.OrderItems.ForEach(x =>
             {
                 createOrderMessageCommand.OrderItems.Add(new OrderItem
                 {
                     PictureUrl = x.PictureUrl,
+                    Quantity = x.Quantity,
                     Price = x.Price,
                     ProductId = x.ProductId,
                     ProductName = x.ProductName

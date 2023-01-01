@@ -20,11 +20,11 @@ namespace Order.Application.Consumers
             var newAddress = new Address(context.Message.Province, context.Message.District, context.Message.Street,
                 context.Message.ZipCode, context.Message.Line);
 
-            Domain.Order order = new Domain.Order(context.Message.BuyerId, newAddress);
+            Domain.Order order = new Domain.Order(context.Message.BuyerId, newAddress, context.Message.TotalPrice);
 
             context.Message.OrderItems.ForEach(x =>
             {
-                order.AddOrderItem(x.ProductId, x.ProductName, x.Price, x.PictureUrl);
+                order.AddOrderItem(x.ProductId, x.ProductName, x.Quantity, x.Price, x.PictureUrl);
             });
 
             await _context.Orders.AddAsync(order);

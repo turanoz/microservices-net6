@@ -16,15 +16,17 @@ namespace Order.Application.Handlers
             _context = context;
         }
 
-        public async Task<Response<CreatedOrderDto>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<Response<CreatedOrderDto>> Handle(CreateOrderCommand request,
+            CancellationToken cancellationToken)
         {
-            var newAddress = new Address(request.Address.Province, request.Address.District, request.Address.Street, request.Address.ZipCode, request.Address.Line);
+            var newAddress = new Address(request.Address.Province, request.Address.District, request.Address.Street,
+                request.Address.ZipCode, request.Address.Line);
 
-            Domain.Order newOrder = new Domain.Order(request.BuyerId, newAddress);
+            Domain.Order newOrder = new Domain.Order(request.BuyerId, newAddress, request.TotalPrice);
 
             request.OrderItems.ForEach(x =>
             {
-                newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Price, x.PictureUrl);
+                newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Quantity, x.Price, x.PictureUrl);
             });
 
             await _context.Orders.AddAsync(newOrder, cancellationToken);

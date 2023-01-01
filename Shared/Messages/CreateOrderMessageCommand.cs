@@ -13,6 +13,7 @@ namespace Shared.Messages
         public string BuyerId { get; set; }
 
         public List<OrderItem> OrderItems { get; set; }
+        public Decimal TotalPrice { get; set; }
 
         public string Province { get; set; }
 
@@ -30,6 +31,7 @@ namespace Shared.Messages
         public string ProductId { get; set; }
         public string ProductName { get; set; }
         public string PictureUrl { get; set; }
+        public int Quantity { get; set; }
         public Decimal Price { get; set; }
     }
 }

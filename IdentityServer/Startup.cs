@@ -45,6 +45,13 @@ namespace IdentityServer
                 .AddDefaultTokenProviders();
 
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("UserPolicy", policyBuilder =>
+                {
+                    policyBuilder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader();
+                });
+            });
 
 
             services.AddSingleton<ICorsPolicyService>((container) =>
@@ -102,6 +109,7 @@ namespace IdentityServer
 
             app.UseStaticFiles();
             app.UseCors();
+            app.UseCors("UserPolicy");
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthentication();

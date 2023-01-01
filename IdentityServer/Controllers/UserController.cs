@@ -6,12 +6,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer.Dtos;
+using Microsoft.AspNetCore.Cors;
 using Shared.Dtos;
 using static IdentityServer4.IdentityServerConstants;
 
 namespace IdentityServer.Controllers
 {
     [Authorize(LocalApi.PolicyName)]
+    [EnableCors("UserPolicy")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase

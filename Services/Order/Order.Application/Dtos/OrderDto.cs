@@ -10,5 +10,6 @@
         public string BuyerId { get; set; }
 
         public List<OrderItemDto> OrderItems { get; set; }
+        public Decimal TotalPrice { get; set; }
     }
 }
