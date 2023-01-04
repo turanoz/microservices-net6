@@ -78,9 +78,7 @@ services:
     ports:
       - "5012:80"
     volumes:
-      - type: bind
-        source: C:\Users\f-cak\Desktop\photos
-        target: /app/wwwroot/photos
+      - wwwroot:/app/wwwroot
   discount.api:
     container_name: discount.api
     environment:
