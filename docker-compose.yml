@@ -58,3 +58,4 @@ volumes:
   discount_volume:
   identitydb_volume:
   orderdb_volume:
+  products_photos:

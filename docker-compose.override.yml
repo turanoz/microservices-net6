@@ -78,7 +78,7 @@ services:
     ports:
       - "5012:80"
     volumes:
-      - wwwroot:/app/wwwroot
+      - products_photos:/app/wwwroot
   discount.api:
     container_name: discount.api
     environment:
