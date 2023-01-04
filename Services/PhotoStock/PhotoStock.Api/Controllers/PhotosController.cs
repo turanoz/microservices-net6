@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PhotoStock.Api.Dtos;
 using Shared.ControllerBases;
 using Shared.Dtos;
@@ -7,6 +8,7 @@ namespace PhotoStock.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class PhotosController : CustomBaseController
     {
         [HttpPost]

@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     options.Authority = builder.Configuration["IdentityServerURL"];
     options.Audience = "resource_photo_stock";
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        RoleClaimType = ClaimTypes.Role
+    };
     options.RequireHttpsMetadata = false;
 });
 

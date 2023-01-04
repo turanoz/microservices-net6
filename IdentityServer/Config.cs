@@ -60,8 +60,7 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes =
                     {
-                        "catalog_fullpermission", 
-                        "photo_stock_fullpermission", 
+                        "catalog_fullpermission",
                         "gateway_fullpermission",
                         IdentityServerConstants.LocalApi.ScopeName
                     }
@@ -75,7 +74,8 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowedScopes =
                     {
-                        "catalog_fullpermission", 
+                        "catalog_fullpermission",
+                        "photo_stock_fullpermission", 
                         "basket_fullpermission", 
                         "order_fullpermission", 
                         "gateway_fullpermission",
