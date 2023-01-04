@@ -97,8 +97,8 @@
         "UpstreamPathTemplate": "/services/fakepayment/{everything}",
         "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
         "UpstreamScheme": "http",
-        "DelegatingHandlers": [ "TokenExhangeDelegateHandler" ],
         "AuthenticationOptions": {
+          "AllowedScopes": [ "payment_fullpermission" ],
           "AuthenticationProviderKey": "GatewayAuthenticationScheme"
         }
       }

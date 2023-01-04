@@ -115,7 +115,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - IdentityServerURL=http://34.88.156.91:5001
       - RabbitMQUrl=rabbitmq
-      - "ConnectionStrings:DefaultConnection=Server=orderdb,1433;Database=OrderDb; User=sa; Password=Password12*"
+      - "ConnectionStrings:DefaultConnection=Server=orderdb,1433;Database=OrderDb; User=sa; Password=Password12*;TrustServerCertificate=true"
     ports:
       - "5015:80"
     depends_on:
