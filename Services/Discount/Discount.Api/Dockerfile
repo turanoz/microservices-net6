@@ -9,4 +9,4 @@ RUN dotnet publish Services/Discount/Discount.Api/*.csproj -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 as runtime
 WORKDIR /app
 COPY --from=build /app/out .
-ENTRYPOINT [ "dotnet","FreeCourse.Services.Discount.dll" ]
+ENTRYPOINT [ "dotnet","Discount.Api.dll" ]
