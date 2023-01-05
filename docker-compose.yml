@@ -3,7 +3,7 @@ services:
   catalogdb:
     image: mongo
   basketdb:
-    image: redis
+    image: bitnami/redis:latest
   discountdb:
     image: postgres
   identitydb:
