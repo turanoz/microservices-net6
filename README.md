@@ -1,4 +1,4 @@
-# Project Readme
+# Microservices
 
 This project consists of a microservices-based architecture for an e-commerce application. The project is built using Docker containers and the services communicate with each other using HTTP requests.
 
